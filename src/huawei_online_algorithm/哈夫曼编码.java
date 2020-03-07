@@ -68,7 +68,7 @@ public class 哈夫曼编码 {
         for (char ch : chars) {
             HCode hCode = hCodeMap.get(String.valueOf(ch));
             if (hCode != null) {
-                output(hCode);
+                output(hCode, n);
             }
         }
         System.out.println();
@@ -92,6 +92,13 @@ public class 哈夫曼编码 {
         }
     }
 
+    public static void output(HCode hCode, int n) {
+        for (int i = hCode.start; i <= n; i++) {
+            System.out.print(hCode.cd[i]);
+        }
+    }
+
+
     /**
      * 根据哈夫曼树求对应的哈夫曼编码
      *
@@ -100,20 +107,24 @@ public class 哈夫曼编码 {
      * @param n
      */
     public static void createHcode(HFMTree[] hfmTrees, List<HCode> hCodeList, int n) {
-        int i, f, c;
-        for (i = 0; i < n; i++) {
+        int f, c;
+        // 根据哈夫曼树求编码
+        for (int i = 0; i < n; i++) {
             HCode hCode = new HCode();
             hCode.start = n;
             hCode.data = hfmTrees[i].data;
             c = i;
             f = hfmTrees[i].parent;
+            // 循环直到无双亲节点，即到达树根节点位置
             while (f != -1) {
                 if (hfmTrees[f].left == c) {
+                    // 当前节点是其双亲节点的左孩子节点
                     hCode.cd[hCode.start--] = '0';
                 } else {
+                    // 当前节点是其双亲节点的右孩子节点
                     hCode.cd[hCode.start--] = '1';
                 }
-
+                // 再对其双亲节点进行同样的操作
                 c = f;
                 f = hfmTrees[f].parent;
             }
