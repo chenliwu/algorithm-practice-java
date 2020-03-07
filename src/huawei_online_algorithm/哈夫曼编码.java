@@ -1,6 +1,14 @@
+package huawei_online_algorithm;
+
 import java.util.*;
 
-public class Main {
+/**
+ * 哈夫曼编码
+ *
+ * @author chenlw
+ * @date 2020/03/07
+ */
+public class 哈夫曼编码 {
 
     static class HFMTree {
         public String data;
@@ -20,6 +28,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String string = sc.nextLine();
         char[] chars = string.toCharArray();
+
         Set<String> charSet = new HashSet<>();
         for (char ch : chars) {
             charSet.add(String.valueOf(ch));
@@ -45,25 +54,24 @@ public class Main {
 
         createdHFMTree(hfmTrees, n);
 
-
         List<HCode> hCodeList = new ArrayList<>();
         createHcode(hfmTrees, hCodeList, n);
 
 
-        Map<String,HCode> hCodeMap = new HashMap<>();
+        Map<String, HCode> hCodeMap = new HashMap<>();
         for (HCode hCode : hCodeList) {
-            hCodeMap.put(hCode.data,hCode);
+            hCodeMap.put(hCode.data, hCode);
             // output(hCode);
         }
 
 
-        for (char ch:chars){
+        for (char ch : chars) {
             HCode hCode = hCodeMap.get(String.valueOf(ch));
-            if(hCode!=null){
+            if (hCode != null) {
                 output(hCode);
             }
         }
-        //System.out.println();
+        System.out.println();
 
 //        for (HFMTree hfmTree : hfmTrees) {
 //            System.out.println(hfmTree.weight + "---" + hfmTree.data);
@@ -75,15 +83,22 @@ public class Main {
 
     }
 
-    public static void output(HCode hCode){
+    public static void output(HCode hCode) {
         char[] outs = hCode.cd;
-        for (char ch:outs){
-            if(ch!='\u0000'){
+        for (char ch : outs) {
+            if (ch != '\u0000') {
                 System.out.print(ch);
             }
         }
     }
 
+    /**
+     * 根据哈夫曼树求对应的哈夫曼编码
+     *
+     * @param hfmTrees
+     * @param hCodeList
+     * @param n
+     */
     public static void createHcode(HFMTree[] hfmTrees, List<HCode> hCodeList, int n) {
         int i, f, c;
         for (i = 0; i < n; i++) {
@@ -107,7 +122,12 @@ public class Main {
         }
     }
 
-
+    /**
+     * 构造哈夫曼树
+     *
+     * @param hfmTrees
+     * @param n
+     */
     public static void createdHFMTree(HFMTree[] hfmTrees, int n) {
         int i, j, k;
         int min1, min2;
