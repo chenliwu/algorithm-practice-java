@@ -129,32 +129,37 @@ public class 哈夫曼编码 {
      * @param n
      */
     public static void createdHFMTree(HFMTree[] hfmTrees, int n) {
-        int i, j, k;
+        // 所有节点的相关域设置为初始值-1
+        for (int i = 0; i < 2 * n - 1; i++) {
+            hfmTrees[i].parent = hfmTrees[i].left = hfmTrees[i].right = -1;
+        }
         int min1, min2;
         int lnode, rnode;
 
-        for (i = 0; i < 2 * n - 1; i++) {
-            hfmTrees[i].parent = hfmTrees[i].left = hfmTrees[i].right = -1;
-        }
-
-        for (i = n; i < 2 * n - 1; i++) {
+        // 构造哈夫曼树: 非叶子节点ht[i]（存放在ht[n]~ht[2n-2]中），叶子节点存储在ht[0]~ht[n-1]
+        for (int i = n; i < 2 * n - 1; i++) {
             min1 = 32767;
-            min2 = 33767;
+            min2 = 32767;
+            // lnode和rnode为权值最小的两个节点的位置（即在数组当中的下标）
             lnode = rnode = -1;
-            for (k = 0; k <= i - 1; k++) {
-                if (hfmTrees[k].parent == -1) {
-                    if (hfmTrees[k].weight < min1) {
+            // 在ht[]中寻找权值最小的两个节点
+            for (int j = 0; j <= i - 1; j++) {
+                // 只在尚未构造二叉树的节点中查找
+                if (hfmTrees[j].parent == -1) {
+                    if (hfmTrees[j].weight < min1) {    // min1总是记录最小权值的值，min2总是记录权值第二小的值
                         min2 = min1;
                         rnode = lnode;
-                        min1 = hfmTrees[k].weight;
-                        lnode = k;
-                    } else if (hfmTrees[k].weight < min2) {
-                        min2 = hfmTrees[k].weight;
-                        rnode = k;
+                        min1 = hfmTrees[j].weight;
+                        lnode = j;
+                    } else if (hfmTrees[j].weight < min2) {
+                        min2 = hfmTrees[j].weight;
+                        rnode = j;
                     }
                 }
             }
+            // 根节点的权值等于左右子树的权值之和
             hfmTrees[i].weight = hfmTrees[lnode].weight + hfmTrees[rnode].weight;
+            // ht[i]作为双亲节点
             hfmTrees[i].left = lnode;
             hfmTrees[i].right = rnode;
             hfmTrees[lnode].parent = i;
