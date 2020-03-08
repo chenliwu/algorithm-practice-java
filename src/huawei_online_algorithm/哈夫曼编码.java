@@ -34,7 +34,7 @@ public class 哈夫曼编码 {
             charSet.add(String.valueOf(ch));
         }
         int n = charSet.size();
-        List<HFMTree> hfmTreeList = new ArrayList<>(n * 2);
+        List<HFMTree> hfmTreeList = new ArrayList<>(n * 2 - 1);
 
         HFMTree[] hfmTrees = new HFMTree[n * 2 - 1];
         for (String ch : charSet) {
