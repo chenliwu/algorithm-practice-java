@@ -63,10 +63,12 @@ public class BinaryTreePractice {
         if (rootNodeNo * 2 >= boundaryNo) {
             return;
         }
+        // 左孩子节点的编号 = 父节点编号 * 2
         BinaryTree leftChild = new BinaryTree();
         leftChild.data = rootNodeNo * 2;
         leftChild.no = rootNodeNo * 2;
 
+        // 右孩子节点的编号 = 父节点编号 * 2 +1
         BinaryTree rightChild = new BinaryTree();
         rightChild.data = rootNodeNo * 2 + 1;
         rightChild.no = rootNodeNo * 2 + 1;
