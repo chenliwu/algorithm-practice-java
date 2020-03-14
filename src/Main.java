@@ -2,55 +2,46 @@ import java.util.*;
 
 public class Main {
 
-    private int a;
 
     public static void main(String[] args) {
-        int a[] = {1, 1, 2, 2, 3, 4, 4};
-        System.out.println(singleNumber(a));
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            int n = scanner.nextInt();
+            if (n <= 0) {
+                return;
+            }
+            int a[][] = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    a[i][j] = scanner.nextInt();
+                }
+            }
+            output(solution(a,n));
+
+        }
+
+//        int a[][] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+//        int n = 4;
+//        output(solution(a, n));
     }
 
-    public static List<Integer> singleNumberIII(int[] A) {
-        // write your code here
-        List<Integer> result = new ArrayList<>();
-        Map<Integer, Integer> countMap = new HashMap();
-        for (int i = 0, len = A.length; i < len; i++) {
-            if (countMap.containsKey(A[i])) {
-                int count = countMap.get(A[i]);
-                countMap.put(A[i], count + 1);
-            } else {
-                countMap.put(A[i], 1);
+    public static void output(int a[][]) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                System.out.print(a[i][j] + " ");
             }
+            System.out.println();
         }
-        Set<Integer> numSet = countMap.keySet();
-        for (Integer integer : numSet) {
-            if (countMap.get(integer) != null && countMap.get(integer) != 2) {
-                result.add(integer);
-            }
-        }
-        return result;
     }
 
-    public static int singleNumber(int[] A) {
-        // write your code here
-        int ans = -1;
-        Map<Integer, Integer> countMap = new HashMap();
-        for (int i = 0, len = A.length; i < len; i++) {
-            if (countMap.containsKey(A[i])) {
-                int count = countMap.get(A[i]);
-                countMap.put(A[i], count + 1);
-            } else {
-                countMap.put(A[i], 1);
+    public static int[][] solution(int a[][], int n) {
+        int b[][] = new int[n][n];
+        for (int startRow = 0; startRow < n; startRow++) {
+            for (int i = 0; i < n; i++) {
+                b[i][n - startRow - 1] = a[startRow][i];
             }
         }
-        Set<Integer> numSet = countMap.keySet();
-        for (Integer integer : numSet) {
-            if (countMap.get(integer) != null && countMap.get(integer) != 3) {
-                ans = integer;
-                break;
-            }
-        }
-        return ans;
-
+        return b;
     }
 
 

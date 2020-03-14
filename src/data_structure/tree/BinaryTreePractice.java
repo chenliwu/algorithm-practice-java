@@ -50,6 +50,14 @@ public class BinaryTreePractice {
         System.out.println();
         System.out.println("------------------------------ 后序遍历 ------------------------------");
 
+        System.out.println("");
+        System.out.println("------------------------------ 显示叶子节点 ------------------------------");
+        System.out.print("显示叶子节点输出编号：");
+        displayLeaf(rootNode);
+        System.out.println();
+        System.out.println("------------------------------ 显示叶子节点 ------------------------------");
+
+
     }
 
     /**
@@ -133,6 +141,21 @@ public class BinaryTreePractice {
             postOrderForeach(rootNode.rightChild);
             // 访问根节点
             System.out.print(rootNode.no + " ");
+        }
+    }
+
+    /**
+     * 显示叶子节点
+     *
+     * @param root
+     */
+    static void displayLeaf(BinaryTree root) {
+        if (root != null) {
+            if (root.leftChild == null && root.rightChild == null) {
+                System.out.print(root.data + " ");
+            }
+            displayLeaf(root.leftChild);
+            displayLeaf(root.rightChild);
         }
     }
 
