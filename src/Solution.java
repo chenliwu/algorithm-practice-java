@@ -17,48 +17,24 @@ public class Solution {
 
     }
 
-    boolean isSymmetrical(TreeNode pRoot) {
-        List<List<Integer>> levelList = levelOrder(pRoot);
-
-        for (List<Integer> list : levelList) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Integer integer : list) {
-                if(integer == -1){
-                    stringBuilder.append("#");
-                }else{
-                    stringBuilder.append(integer);
-                }
-            }
-            if (!isDc(stringBuilder.toString())) {
-                // 只要有一层不是对称的，该二叉树就不是对称二叉树
-                return false;
+    public int[] levelOrder(TreeNode root) {
+        levelOrder(root, 0);
+        List<Integer> list = new ArrayList<>();
+        for (List<Integer> listTemp : resultList) {
+            for (Integer integer : listTemp) {
+                list.add(integer);
             }
         }
-        return true;
-    }
-
-    public boolean isDc(String string) {
-        char[] chars = string.toCharArray();
-        for (int i = 0, j = chars.length - 1; i <= j; i++, j--) {
-            if (chars[i] != chars[j]) {
-                return false;
-            }
+        int a[] = new int[list.size()];
+        int i = 0;
+        for (Integer integer : list) {
+            a[i++] = integer;
         }
-        return true;
+        return a;
     }
 
     List<List<Integer>> resultList = new ArrayList<>();
 
-    /**
-     * 层次遍历二叉树，得到一个列表数组。
-     *
-     * @param root
-     * @return
-     */
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        levelOrder(root, 0);
-        return resultList;
-    }
 
     private void levelOrder(TreeNode root, int level) {
         if (root == null) {
