@@ -1,12 +1,17 @@
 package data_structure.tree;
 
 
+import sun.misc.Queue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 二叉树定义
  */
 class BinaryTree {
     public Object data;
-    public Object no;
+    public int no;
     public BinaryTree leftChild;
     public BinaryTree rightChild;
 }
@@ -58,6 +63,9 @@ public class BinaryTreePractice {
         System.out.println("------------------------------ 显示叶子节点 ------------------------------");
 
 
+        System.out.println();
+        System.out.println("层次遍历");
+        levelOrder(rootNode);
     }
 
     /**
@@ -157,6 +165,37 @@ public class BinaryTreePractice {
             displayLeaf(root.leftChild);
             displayLeaf(root.rightChild);
         }
+    }
+
+
+    static int[] levelOrder(BinaryTree root) {
+        List<Integer> nodeValues = new ArrayList<>();
+        Queue<BinaryTree> queue = new Queue<>();
+        queue.enqueue(root);
+        while (!queue.isEmpty()) {
+            try {
+                // 队头元素出队
+                BinaryTree node = queue.dequeue();
+                nodeValues.add(node.no);
+                if (node.leftChild != null) {
+                    queue.enqueue(node.leftChild);
+                }
+                if (node.rightChild != null) {
+                    queue.enqueue(node.rightChild);
+                }
+            } catch (Exception e) {
+
+            }
+
+        }
+        int a[] = new int[nodeValues.size()];
+        int i = 0;
+        for (Integer integer : nodeValues) {
+            a[i++] = integer;
+            System.out.print(integer + " ");
+        }
+        System.out.println();
+        return a;
     }
 
 
