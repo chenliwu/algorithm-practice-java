@@ -33,9 +33,7 @@ public class Jsws {
     }
 
     public static void main(String[] args) {
-        Jsws jsws = Jsws.getInstance();
-        jsws.start();
-        jsws.destroy();
+        System.out.println("12345678".substring(0,8));
     }
 
 }

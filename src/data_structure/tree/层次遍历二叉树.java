@@ -18,7 +18,7 @@ class TreeNode {
  */
 public class 层次遍历二叉树 {
 
-    List<List<Integer>> resultList = new ArrayList<>();
+    ArrayList<List<Integer>> resultList = new ArrayList<>();
 
     public List<List<Integer>> levelOrder(TreeNode root) {
         levelOrder(root, 0);

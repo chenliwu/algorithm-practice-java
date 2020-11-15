@@ -1,6 +1,12 @@
-import java.util.*;
+package huawei_online_algorithm;
 
-public class Main {
+import java.util.Scanner;
+
+/**
+ * @author chenlw
+ * @since 2020-11-15
+ */
+public class 查找两个字符串的最长公共子串 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
