@@ -1,6 +1,14 @@
-import java.util.*;
+package huawei_online_algorithm;
 
-public class Main {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * @author chenlw 2021-06-06
+ * @since 1.0.0
+ */
+public class 手撕代码20210603 {
 
     public static void main(String[] args) {
         // test1();
@@ -158,6 +166,5 @@ public class Main {
 
 
     }
-
 
 }
