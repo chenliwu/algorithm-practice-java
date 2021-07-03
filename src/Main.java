@@ -6,249 +6,78 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
-            String exp = scanner.nextLine();
-            String postExp = trans(exp);
-            System.out.println((int) comValue(postExp));
+            String str = scanner.nextLine();
+            handle(str);
         }
     }
 
-    static float comValue(String postExp) {
-        // 运算数栈
-        Stack<Float> opNumberStack = new Stack<>();
-        char[] chars = postExp.toCharArray();
-        int len = chars.length;
-        int index = 0;
-        float a, b, c, d;
-        while (index < len) {
-            char ch = chars[index];
-            switch (ch) {
-                case '+':
-                    // 退栈取数
-                    a = opNumberStack.pop();
-                    b = opNumberStack.pop();
-                    c = a + b;
-                    // 将计算结果进栈
-                    opNumberStack.push(c);
-                    break;
-                case '-':
-                    a = opNumberStack.pop();
-                    b = opNumberStack.pop();
-                    c = b - a;
-                    // 将计算结果进栈
-                    opNumberStack.push(c);
-                    break;
-                case '*':
-                    a = opNumberStack.pop();
-                    b = opNumberStack.pop();
-                    c = a * b;
-                    // 将计算结果进栈
-                    opNumberStack.push(c);
-                    break;
-                case '/':
-                    a = opNumberStack.pop();
-                    b = opNumberStack.pop();
-                    if (a != 0) {
-                        c = b / a;
-                        // 将计算结果进栈
-                        opNumberStack.push(c);
-                    } else {
-                        System.out.println("除数不能为0");
-                        throw new RuntimeException();
-                    }
-                    break;
-                // 处理数字字符
-                default:
-                    d = 0;
-                    while (Character.isDigit(ch)) {
-                        d = d * 10 + Float.parseFloat(String.valueOf(ch));
-                        ch = chars[++index];
-                    }
-                    // 运算数进栈
-                    opNumberStack.push(d);
-                    break;
-            }
-            index++;
+    public static void handle(String str) {
+        List<String> ans = getAnsString(str);
+        for (String s : ans) {
+            System.out.println(s);
         }
-        return opNumberStack.peek();
     }
 
-    /**
-     * 将算术表达式转化为后缀表达式
-     *
-     * @param exp
-     */
-    static String trans(String exp) {
-        Stack<Character> opStack = new Stack<>();
-        opStack.push('=');
-
-        char[] chars = exp.toCharArray();
-        int len = chars.length;
-        int index = 0;
-        // 后缀表达式
-        StringBuilder postExp = new StringBuilder();
-        while (index < len) {
-            char ch = chars[index];
-            if (isOperator(ch)) {
-                // 比较栈顶运算符的优先级
-                switch (precede(opStack.peek(), ch)) {
-                    // 栈顶运算符优先级比ch低
-                    case -1:
-                        // 运算符ch进栈
-                        opStack.push(ch);
-                        index++;
-                        break;
-                    // 栈顶运算符优先级与ch相同
-                    case 0:
-                        // 只有括号满足这种情况，将(退栈
-                        opStack.pop();
-                        index++;
-                        break;
-                    // 栈顶运算符优先级比ch高
-                    case 1:
-                        // 栈顶运算符要先执行，退栈运算符并将其放到postexp中
-                        postExp.append(opStack.pop());
-                        break;
-                }
-            } else {
-                // ch为数字
-                while (Character.isDigit(ch)) {
-                    postExp.append(ch);
-                    if (index + 1 == len) {
-                        index++;
-                        break;
-                    }
-                    ch = chars[++index];
-                }
-                postExp.append("#");
+    public static List<String> getAnsString(String str) {
+        List<String> ans = new ArrayList<>();
+        if (Objects.isNull(str) || str.length() == 0) {
+            return ans;
+        }
+        char[] chars = str.toCharArray();
+        final int strLen = 8;
+        StringBuilder sb = new StringBuilder();
+        for (char ch : chars) {
+            sb.append(ch);
+            if (sb.length() == strLen) {
+                ans.add(sb.toString());
+                sb = new StringBuilder();
             }
         }
-        // exp扫描完毕，退栈到=为止
-        while (opStack.peek() != '=') {
-            postExp.append(opStack.pop());
+        if (sb.length() > 0) {
+            String zoneStr = "00000000";
+            int appendZoneCount = strLen - sb.length();
+            sb.append(zoneStr.substring(0,appendZoneCount));
+            ans.add(sb.toString());
         }
-        return postExp.toString();
-    }
-
-    static class ExpressItem {
-        public String operator;
-        public Integer number;
-        /**
-         * type=0,是数字；type=1是运算符
-         */
-        public int type;
-    }
-
-
-    /**
-     * 设置运算符优先级
-     */
-    static List<OperatorPrecedence> leftPres = new ArrayList<>();
-    static List<OperatorPrecedence> rightPres = new ArrayList<>();
-
-    static {
-        // 数值越大，优先级越高
-        leftPres.add(new OperatorPrecedence('=', 0));
-        leftPres.add(new OperatorPrecedence('(', 1));
-        leftPres.add(new OperatorPrecedence('*', 5));
-        leftPres.add(new OperatorPrecedence('/', 5));
-        leftPres.add(new OperatorPrecedence('+', 3));
-        leftPres.add(new OperatorPrecedence('-', 3));
-        leftPres.add(new OperatorPrecedence(')', 6));
-
-        rightPres.add(new OperatorPrecedence('=', 0));
-        rightPres.add(new OperatorPrecedence('(', 6));
-        rightPres.add(new OperatorPrecedence('*', 4));
-        rightPres.add(new OperatorPrecedence('/', 4));
-        rightPres.add(new OperatorPrecedence('+', 2));
-        rightPres.add(new OperatorPrecedence('-', 2));
-        rightPres.add(new OperatorPrecedence(')', 1));
+        return ans;
     }
 
     /**
-     * 获取左运算符op的优先级
+     * 计算二进制1的个数 - 模2取余法
      *
-     * @param operator
-     * @return
+     * @param n 数字
+     * @return 二进制1的个数
      */
-    static int getLeftPre(char operator) {
-        for (OperatorPrecedence op : leftPres) {
-            if (op.operator == operator) {
-                return op.pre;
+    public static int fun(int n) {
+        int ans = 0;
+        while (true) {
+            // 模2取余法
+            if (n % 2 == 1) {
+                ans++;
+            }
+            if (n / 2 == 0) {
+                break;
+            }
+            n = n / 2;
+        }
+        return ans;
+    }
+
+    /**
+     * 计算二进制1的个数  按位与
+     *
+     * @param n 数字
+     * @return 二进制1的个数
+     */
+    public static int fun1(int n) {
+        int ans = 0;
+        // 比对每一位
+        for (int i = 0; i < 32; i++) {
+            if ((n & (1 << i)) == (1 << i)) {
+                ans++;
             }
         }
-        return -1;
-    }
-
-    /**
-     * 获取右运算符op的优先级
-     *
-     * @param operator
-     * @return
-     */
-    static int getRightPre(char operator) {
-        for (OperatorPrecedence op : rightPres) {
-            if (op.operator == operator) {
-                return op.pre;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * 判断是否是运算符
-     *
-     * @param operator
-     * @return
-     */
-    static boolean isOperator(char operator) {
-        if (operator == '(' || operator == ')'
-                || operator == '+' || operator == '-' || operator == '*' || operator == '/') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 运算符优先级的比较结果
-     *
-     * @param leftOperator
-     * @param rightOperator
-     * @return
-     */
-    static int precede(char leftOperator, char rightOperator) {
-        int leftPre = getLeftPre(leftOperator);
-        int rightPre = getRightPre(rightOperator);
-        if (leftPre == rightPre) {
-            return 0;
-        } else if (leftPre < rightPre) {
-            return -1;
-        }
-        return 1;
-    }
-
-    /**
-     * 运算符优先级
-     */
-    static class OperatorPrecedence {
-
-        public OperatorPrecedence() {
-        }
-
-        public OperatorPrecedence(char operator, int pre) {
-            this.operator = operator;
-            this.pre = pre;
-        }
-
-        /**
-         * 运算符
-         */
-        public char operator;
-
-        /**
-         * 优先级
-         */
-        public int pre;
-
+        return ans;
     }
 
 
